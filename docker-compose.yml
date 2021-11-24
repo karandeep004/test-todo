@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  web:
+    build: ./frontend
+    environment:
+      API_URI: todo
+    depends_on:
+      - todo
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    command: yarn dev
+
+  todo:
+    #image: todo:latest
+    build: ./backend
+    # restart: always
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    environment:
+      - PORT=8080
+      - PG_USER=postgres
+      - PG_PASSWORD=secret
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_DB=tasks
+    ports:
+      - 8080:8080
+  postgres:
+    image: postgres:10.1-alpine
+    # restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=tasks
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
