@@ -1,29 +1,30 @@
 package main
 
 import (
-  "github.com/gin-gonic/gin"
-  TaskController "github.com/hugomd/go-todo/controllers"
-  "github.com/hugomd/go-todo/db"
-  "log"
+	"log"
+
+	"github.com/gin-gonic/gin"
+	TaskController "github.com/hugomd/go-todo/controllers"
+	"github.com/hugomd/go-todo/db"
 )
 
 func main() {
-  log.Println("Starting server..")
+	log.Println("Starting server..")
 
-  db.Init();
+	db.Init()
 
-  r := gin.Default()
+	r := gin.Default()
 
-  v1 := r.Group("/api/v1")
-  {
-    tasks := v1.Group("/tasks")
-    {
-      tasks.GET("/", TaskController.GetTasks)
-      tasks.POST("/", TaskController.CreateTask)
-      tasks.PUT("/:id", TaskController.UpdateTask)
-      tasks.DELETE("/:id", TaskController.DeleteTask)
-    }
-  }
+	v1 := r.Group("/api/v1")
+	{
+		tasks := v1.Group("/tasks")
+		{
+			tasks.GET("/", TaskController.GetTasks)
+			tasks.POST("/", TaskController.CreateTask)
+			tasks.PUT("/:id", TaskController.UpdateTask)
+			tasks.DELETE("/:id", TaskController.DeleteTask)
+		}
+	}
 
-  r.Run()
+	r.Run()
 }

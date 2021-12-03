@@ -6,5 +6,11 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     host: '0.0.0.0',
+    proxy: {
+      '/api': {
+        target: 'http://todo:8080',
+        secure: false,
+      }
+    }
   }
 })

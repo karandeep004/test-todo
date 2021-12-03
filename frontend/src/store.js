@@ -37,7 +37,7 @@ export default createStore({
         loadTodos ({ commit }) {
             commit('SET_LOADING', true)
             axios
-                .get('http://localhost:3000/todos')
+                .get(`/api/v1/tasks`)
                 .then(r => r.data)
                 .then(todos => {
                     commit('SET_TODOS', todos)
