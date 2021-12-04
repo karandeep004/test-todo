@@ -1,117 +1,68 @@
 <template>
-  <div class="main">
-    <template>
-      <el-table :data="todos"  empty-text="No Items" class="wrapper" row-key="id" @select="updateTodo" ref="todoTable">
-        <el-table-column type="selection" style="width: 30px">
-        </el-table-column>
-        <el-table-column prop="title" width="950">
-          <template slot="header" slot-scope="header">
-            <div class="wrapInput">
-              <el-input v-model="newTodo" size="mini" style="width: 80%; marginRight: 40px" @keyup.enter="addTodo">
-              </el-input>
-            <el-button type="primary" size="mini" @click="addTodo" :disabled="newTodo.length === 0">Add</el-button>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="delete">
-          <template slot-scope="scope">
-            <span class="destroy" @click="deleteTodo(scope.$index, todos)"></span>
-          </template>
-        </el-table-column>
-
-      </el-table>
-    </template>
+  <div class="bg-purple-500 h-screen flex justify-center items-center">
+    <div class="w-1/2 bg-white rounded-lg p-5 shadow-xl">
+      <h3 class="text-2xl font-bold text-center uppercase border-b-2 border-gray-300 pb-4 mb-4">todo app</h3>
+      <section class="bg-blue-200 rounded-lg px-6 py-6">
+        <h4 class="uppercase text-lg font-semibold text-center">add todo</h4>
+        <form @submit.prevent="addTodo()">
+          <input
+            v-model="newTodo"
+            name="newTodo"
+            autocomplete="off"
+            class="w-full p-4 rounded my-5"
+            placeholder="Please enter your todo"
+          >
+          <button class="w-full p-4 uppercase text-lg bg-green-500 hover:bg-green-600">Add ToDo</button>
+        </form>
+      </section>
+      <article class="my-5 rounded-lg">
+        <div
+          class="flex mb-4 items-center px-6 py-3 rounded-lg"
+          :class="[todo.completed ? 'bg-green-300': 'bg-yellow-300']"
+          v-for="(todo) in todos"
+          key="todo.id"
+        >
+          <p class="w-full text-grey-darkest">{{todo.title}}</p>
+          <button
+            class="flex-no-shrink p-2 ml-4 mr-2 rounded bg-green-700 hover:bg-green-600 text-white font-bold uppercase" v-if="!todo.completed"
+            @click="completeTodo(todo)"
+          >Done</button>
+          <button
+            class="flex-no-shrink p-2 ml-2 rounded bg-red-700 hover:bg-red-600 text-white font-bold uppercase"
+            @click="deleteTodo(todo)"
+          >Remove</button>
+        </div>
+      </article>
+    </div>
   </div>
 </template>
-
 <script>
-export default {
-  name: 'todolist',
-  data: function () {
-          return {
-              newTodo: '',
+  export default {
+    name: 'todo-app',
+    data() {
+      return {
+        newTodo: ''
       }
-  },
-  created () {
+    },
+    created() {
       this.$store.dispatch('loadTodos');
-  },
-  updated () {
-      let todos = this.$store.getters.todos;
-      todos.forEach(todo => {
-          this.$refs.todoTable.toggleRowSelection(todo, todo.completed);
-      });
-  },
-  // computed properties
-  computed: {
-      todos () {
-          return this.$store.getters.todos;
+    },
+    computed: {
+      todos() {
+        return this.$store.getters.todos;
       }
-  },
-  // methods that implement data logic.
-  methods: {
-      addTodo () {
-          this.$store.dispatch('addTodo', this.newTodo);
-          this.$store.dispatch('clearNewTodo');
-          this.newTodo = '';
+    },
+    methods: {
+      completeTodo(todo) {
+        this.$store.dispatch('updateTodo', todo);
       },
-      deleteTodo (index, rows) {
-          this.$store.dispatch('deleteTodo', rows[index])
+      deleteTodo(todo) {
+        this.$store.dispatch('deleteTodo', todo);
       },
-      updateTodo(selection, todo) {
-          this.$store.dispatch('updateTodo', todo);
+      addTodo() {
+        this.$store.dispatch('addTodo', this.newTodo);
+        this.newTodo = '';
       }
+    }
   }
-}
 </script>
-<style>
-  .destroy {
-    display: none;
-    position: absolute;
-    top: 15px;
-    right: 5px;
-    bottom: 0;
-    width: 40px;
-    height: 40px;
-    margin: auto 0;
-    font-size: 30px;
-    color: #cc9a9a;
-    transition: color 0.2s ease-out;
-    align-content: center;
-  }
-  .destroy:hover {
-    color: #af5b5e;
-  }
-  .destroy:after {
-    content: '×';
-  }
-  tr:hover .destroy {
-    display: block;
-  }
-  .wrapper {
-    border: 1px solid #ebeef5;
-  }
-  .main {
-    margin-left: 12%;
-    margin-right: 12%;
-    border-right: 1px solid #ebeef5;
-    height: 100%;
-    padding-top: 5rem;
-  }
-  .wrapInput {
-    width: 100%;
-  }
-  .el-table.cell, .el-table th div {
-    padding-right: 10px;
-    overflow: visible !important;
-    text-overflow: ellipsis;
-  }
-  .el-table {
-    border-radius: 0.4rem;
-  }
-  .el-table_1_column_1.el-table-column--selection.is-leaf .cell {
-    display: none;
-  }
-  .el-table_2_column_4.el-table-column--selection.is-leaf .cell {
-    display: none;
-  }
-</style>

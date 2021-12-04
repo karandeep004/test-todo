@@ -8,13 +8,15 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
-    "element-plus": "^1.2.0-beta.3",
     "vue": "^3.2.16",
     "vue-axios": "^3.4.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.3",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.4",
+    "tailwindcss": "^2.2.19",
     "vite": "^2.6.4"
   }
 }

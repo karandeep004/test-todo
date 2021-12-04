@@ -49,23 +49,21 @@ export default createStore({
                 return
             }
             const todo = {
-                title: todoItem,
-                completed: false,
-                id: randomId()
+                title: todoItem
             }
-            axios.post('http://localhost:3000/todos', todo).then(() => {
+            axios.post(`/api/v1/tasks`, todo).then(() => {
                 commit('ADD_TODO', todo);
             })
         },
         deleteTodo ({ commit }, todo) {
-            axios.delete(`http://localhost:3000/todos/${todo.id}`).then(() => {
+            axios.delete(`/api/v1/tasks/${todo.id}`).then(() => {
                 commit('DELETE_TODO', todo);
             })
         },
         updateTodo({ commit }, todo){
             const updatedTodo = todo;
             updatedTodo.completed = !updatedTodo.completed;
-            axios.put(`http://localhost:3000/todos/${todo.id}`, updatedTodo).then(() => {
+            axios.put(`/api/v1/tasks/${todo.id}`, updatedTodo).then(() => {
                 commit('UPDATE_TODO', todo);
             })
         },
