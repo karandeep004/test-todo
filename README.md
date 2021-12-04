@@ -26,4 +26,3 @@ go run main.go
 
 For state management Vuex has been used and for ajax request, Axios library has been used.
 
-Live link for the working app is [ CLICK THIS LINK](http://206.189.134.152:3000/)
