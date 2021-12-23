@@ -16,6 +16,7 @@ jobs:
           script: |
             cd test-todo
             git pull origin 
+            ls -la
             docker-compose down
             docker-compose build
             docker-compose up -d
