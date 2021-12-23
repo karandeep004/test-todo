@@ -8,7 +8,7 @@ services:
     depends_on:
       - todo
     ports:
-      - "3000:3000"
+      - "3000:8000"
     volumes:
       - ./frontend:/app
     command: yarn dev
