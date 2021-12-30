@@ -8,8 +8,10 @@
 
   const newTodo = ref('')
   const addTodo = () => {
-    todo.addTodo(newTodo.value)
-    newTodo.value = ''
+    if (newTodo.value.trim()) {
+      todo.addTodo(newTodo.value)
+      newTodo.value = ''
+    }
   }
 
   const deleteTodo = (id: string) => {
@@ -22,13 +24,12 @@
       target.completed = !target.completed
       todo.updateTodo(id, target)
     }
-
   }
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-screen bg-purple-500 py-7 overflow-hidden">
-    <div class="w-1/2 p-5 bg-white rounded-lg shadow-xl">
+  <div class="w-full flex items-center justify-center bg-purple-500 min-h-screen">
+    <div class="bg-white rounded shadow p-6 pb-4 my-8 w-full lg:w-1/2">
       <h3 class="pb-4 mb-4 text-2xl font-bold text-center uppercase border-b-2 border-gray-300">todo app</h3>
       <section class="px-6 py-6 bg-blue-200 rounded-lg">
         <h4 class="text-lg font-semibold text-center uppercase">add todo</h4>
