@@ -4,14 +4,12 @@ services:
   web:
     build: ./frontend
     environment:
-      API_URI: todo
+      VITE_APP_API_URL: todo
     depends_on:
       - todo
     ports:
-      - "8000:3000"
-    volumes:
-      - ./frontend:/app
-    command: yarn dev
+      - "8000:5000"
+    command: yarn preview
 
   todo:
     #image: todo:latest
